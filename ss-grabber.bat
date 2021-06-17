@@ -64,7 +64,7 @@ goto :eof
 	     -g 5 !fetching! -c 0x0f -d "▒" -c %main_color% -d " Fetching: "^
 		 -c 0x0f -d "!url!"
 		 
-	curl -H "User-Agent: %ua%" -ss https://prnt.sc/!url! -o raw.tmp
+	curl -H "User-Agent: %ua%" -ss https://prnt.sc/!url! --ssl-no-revoke -o raw.tmp
 	for /f %%i in ("raw.tmp") do echo -g 24 !fetching! -c %main_color% -d "[" -c 0x08 -d "%%~zi bytes" -c %main_color% "]"
 
 	for /f "tokens=13,15 delims=>" %%a in ('find "no-click screenshot-image" raw.tmp') do (
@@ -74,7 +74,7 @@ goto :eof
 				set "file=%%~nxz"
 				echo !link! | findstr /c:image.prntscr.com >nul && (
 					for /f "tokens=4 delims=/" %%x in ("!link!") do (
-						curl -H "User-Agent: %ua%" -ss !link! -o screenshots/!last_file!.png
+						curl -H "User-Agent: %ua%" -ss !link! --ssl-no-revoke -o screenshots/!last_file!.png
 						set /a total_downloaded+=1
 						set /a total_files+=1
 						pushD screenshots && for /f %%n in ("!last_file!.png") do (
